@@ -1,0 +1,19 @@
+#!/bin/sh
+while read line
+do
+	if [ "$line" == "--- begin notification ---" ]
+	then
+		text=''
+		read line
+		until [ "$line" == "--- end notification ---" ]
+		do
+			text="$(printf "${text}\n${line}")"
+			read line
+		done
+		text="$(echo "$text" | grep -v '^$')"
+	fi
+	### uncomment for audio
+	# mpv AUDIO &
+
+	herbe "$text"
+done
